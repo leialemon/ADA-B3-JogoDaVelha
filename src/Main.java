@@ -4,21 +4,37 @@ import java.util.*;
 import java.lang.String;
 
 public class Main {
+
+    static int pontuacaoX;
+    static int pontuacao0;
+    static char[][] tabuleiro = {{'_','_','_'}, {'_','_','_'}, {'_','_','_'}};
+    static Scanner input = new Scanner(System.in);
+    static String jogadorX;
+    static String jogador0;
+
     public static void main(String[] args) {
-        // Variáveis
-        Scanner input = new Scanner(System.in);
-        char[][] tabuleiro = {{'_','_','_'}, {'_','_','_'}, {'_','_','_'}};
-        boolean empate = checarEmpate(tabuleiro);
 
+        // boas vindas
+        historia();
+        regras();
+        System.out.println("(Pressione qualquer tecla para continuar)");
+        input.next();
         // Perguntar nome dos jogadores;
+        do{
         System.out.println("Digite o nome do jogador X: ");
-        String jogadorX = input.nextLine();
+        jogadorX = input.next();
         System.out.println("Digite o nome do jogador 0: ");
-        String jogador0 = input.nextLine();
-        String[] jogadores = {jogador0, jogadorX};
+        jogador0 = input.next();
+        if (Objects.equals(jogadorX, "")){
+            System.out.println("Por favor, digite um nome para o jogador X.");
+        } else if (Objects.equals(jogador0,"")) {
+            System.out.println("Por favor, digite um nome para o jogador 0.");
+        } else if (Objects.equals(jogador0, jogadorX)) {
+            System.out.println("Por favor, digite nomes diferentes para os jogadores.");
+        }
+        } while(Objects.equals(jogadorX,"") || Objects.equals(jogador0,"") || Objects.equals(jogadorX,jogador0));
 
-        boolean vitoria = checarVitoria(tabuleiro, jogadorX, jogador0);
-        // Mostrar placar (criar uma classe para salvar as pontuações?); !!!!!!!!!
+        String[] jogadores = {jogador0, jogadorX};
 
         // Escolher o primeiro jogador;
         Random aleatorio = new Random();
@@ -26,28 +42,26 @@ public class Main {
 
         System.out.println(jogadores[primeiro]+", você começa!");
 
-        do{
-            while (!vitoria && !empate){
-                // loop do jogo
-                System.out.println(jogadores[primeiro]+", sua vez!");
-                tabuleiro = jogo(tabuleiro);
-                vitoria = checarVitoria(tabuleiro, jogadorX, jogador0);
-                empate = checarEmpate(tabuleiro);
-                if (Objects.equals(jogadores[primeiro], jogadorX)){
-                    System.out.println(jogador0+", sua vez!");
-                }
-                else {
-                    System.out.println(jogadorX + ", sua vez!");
-                }
-                tabuleiro = jogo(tabuleiro);
-                vitoria = checarVitoria(tabuleiro, jogadorX, jogador0);
-                empate = checarEmpate(tabuleiro);
-            }
+        String[] jogadoresOrdenados = new String[2];
+        jogadoresOrdenados[0] = jogadores[primeiro];
+        if(Objects.equals(jogadores[primeiro],jogador0)){
+            jogadoresOrdenados[1] = jogadorX;
+        }
+        else{
+            jogadoresOrdenados[1] = jogador0;
+        }
 
-            // Verificar de quem foi a vitória e adicionar na pontuação; !!!!!!!!
+        String comando;
+        do{
+            loopJogo(jogadoresOrdenados);
+            System.out.println();
+            pontuacao();
+            System.out.println();
+            limparTabuleiro();
             System.out.println("Digite 'h' para ler novamente a história do jogo, 'r' para ler as regras e comandos, ou 'q' para sair.");
-            System.out.println("Para jogar novamente, digite qualquer coisa (exceto 'h', 'r' ou 'q')");
-            switch (input.nextLine().toLowerCase()){
+            System.out.println("Para jogar novamente, digite qualquer coisa (exceto 'q').");
+            comando = input.next().toLowerCase();
+            switch (comando){
                 case "h":
                     historia();
                     break;
@@ -56,72 +70,95 @@ public class Main {
                     break;
             }
         }
-        while(!Objects.equals(input.next().toLowerCase(), "q"));
-        // Loop do jogo (método?):
-        // 1 - Pedir a jogada da vez; - FEITO
-        // 2 - Verificar a validade da jogada; - FEITO
-        // 3 - Verificar se a jogada é igual à alguma das anteriores; (checar se o elemento tabuleiro[i][j] é diferente de "_"); - FEITO
-        // 4 - Aplicar a jogada; (modificar tabuleiro[i][j]); - FEITO
-        // 5 - Verificar se houve vencedor; - FEITO
-        // 6 - Pedir a próxima jogada do outro jogador. - FEITO
-        // jogo deve continuar até alguém pressionar 'q';
-
+        while(!Objects.equals(comando, "q"));
     }
     // Método para contar a historinha;
     public static void historia(){
         Scanner input = new Scanner(System.in);
         System.out.println("No distante reino dos caracteres, o rei ASCII organizou um torneio para descobrir quem era o" +
                 " melhor de seus guerreiros.");
-        System.out.println();
         System.out.println("Diversas provas foram disputadas: justa, liça, concurso de comer tortas...");
         System.out.println("E um a um os bravos guerreiros foram sendo eliminados.");
         System.out.println("Entretanto, dois deles continuavam de pé, empatados no primeiro lugar de todas as provas"+
                 " que disputaram.");
-        System.out.println("Seus nomes eram Xena Xavier e Ostrogildo Ostrogodo: X e O.");
-        System.out.println();
+        System.out.println("Seus nomes eram Xena Xavier e 0strogildo Ostrogodo: X e 0.");
         System.out.println("(Pressione qualquer tecla para continuar)");
         input.next();
-        System.out.println();
-        System.out.println("Agora Xena e Ostrogildo se encaram num desafio final.");
+        System.out.println("Agora Xena e 0strogildo se encaram num desafio final.");
         System.out.println("O vencedor será conhecido como o melhor guerreiro dos caracteres.");
         System.out.println("----");
-        System.out.println("X O : o confronto");
+        System.out.println("X vs. 0: O confronto");
         System.out.println("----");
         System.out.println("(Pressione qualquer tecla para continuar)");
         input.next();
     }
 
-    // Método para imprimir as regras e comandos; !!!!!!!
+    // Método para imprimir as regras e comandos;
     public static void regras(){
         //Mensagem de boas-vindas
         // Regras e opções de comando;
+        System.out.println("Este é o jogo da velha. Na sua vez, cada jogador poderá marcar 'X' ou '0' em um espaço do tabuleiro.");
+        System.out.println("O jogador que conseguir marcar seu símbolo em 3 casas consecutivas ganhará a partida.");
+        tabuleiroImprimir();
+        System.out.println("(Pressione qualquer tecla para continuar)");
+        input.next();
+        System.out.println("Para registrar sua jogada, o jogador da vez deverá digitar uma sequência de 3 caracteres:");
+        System.out.println("LCM - a Linha da jogada, a Coluna da jogada, e o Marcador que deseja registrar.");
+        System.out.println("Por exemplo: 11X marca um X no espaço central do tabuleiro.");
+        System.out.println("Não é permitido repetir jogadas (ou seja, tentar marcar um espaço que já está marcado).");
+        System.out.println("Se todos os espaços forem preenchidos e não houver vencedor, a partida acabará em empate.");
+        System.out.println("Quando uma partida acabar, digite 'h' para ler novamente a história do jogo, 'r' para ler as regras e comandos, ou 'q' para sair.");
         System.out.println();
     }
 
-    // Loop principal do jogo;
-    public static char[][] jogo(char[][] tabuleiro){
-        Scanner entrada = new Scanner(System.in);
-        String jogada = entrada.nextLine().toUpperCase();
-        boolean validade = checarValidade(jogada);
-        while(!validade){
-            System.out.println("Jogue novamente");
-            jogada = entrada.nextLine().toUpperCase();
-            validade = checarValidade(jogada);
+    // Método para imprimir pontuações;
+    public static void pontuacao(){
+        System.out.println("Pontuação:");
+        System.out.println("X "+jogadorX+": "+pontuacaoX);
+        System.out.println("0 "+jogador0+": "+pontuacao0);
+    }
+
+    // Dois métodos que controlam o funcionamento do jogo;
+    public static void loopJogo(String[] jogadores){
+        boolean vitoria = checarVitoria();
+        boolean empate = checarEmpate();
+        tabuleiroImprimir();
+        while (!vitoria && !empate){
+            // loop do jogo
+            for (String jogador : jogadores) {
+                System.out.println(jogador + ", sua vez!");
+                tabuleiro = loopJogada();
+                vitoria = checarVitoria();
+                empate = checarEmpate();
+                if (vitoria || empate){
+                    break;
+                }
+            }
         }
-        int linha = Character.getNumericValue(jogada.charAt(0));
-        int coluna = Character.getNumericValue(jogada.charAt(1));
-        char marcador = jogada.charAt(2);
-        boolean repetida = checarRepetida(tabuleiro[linha][coluna]);
-        while(repetida){
-            System.out.println("Essa jogada já foi feita, jogue novamente.");
-            jogada = entrada.nextLine();
+    }
+
+    public static char[][] loopJogada(){
+        String jogada;
+        int linha;
+        int coluna;
+        char marcador;
+        boolean validade;
+        boolean repetida;
+        do {
+            jogada = input.next().toUpperCase();
+            validade = checarValidade(jogada);
+            while (!validade) {
+                System.out.println("Jogue novamente:");
+                jogada = input.next().toUpperCase();
+                validade = checarValidade(jogada);
+            }
             linha = Character.getNumericValue(jogada.charAt(0));
             coluna = Character.getNumericValue(jogada.charAt(1));
             marcador = jogada.charAt(2);
             repetida = checarRepetida(tabuleiro[linha][coluna]);
-        }
+        }while(repetida);
         tabuleiro[linha][coluna] = marcador;
-        tabuleiroImprimir(tabuleiro);
+        tabuleiroImprimir();
         return tabuleiro;
     }
 
@@ -130,6 +167,7 @@ public class Main {
         boolean repetida;
         if (jogada != '_'){
             repetida = true;
+            System.out.println("Jogada repetida, jogue novamente:");
         }
         else{
             repetida = false;
@@ -137,6 +175,7 @@ public class Main {
         return repetida;
     }
 
+    // Método para checar a validade da jogada;
     public static boolean checarValidade(String jogada){
         boolean valida;
         if (jogada.length() != 3){
@@ -159,7 +198,7 @@ public class Main {
     }
 
     // Método para mostrar o tabuleiro;
-    public static void tabuleiroImprimir(char[][] tabuleiro){
+    public static void tabuleiroImprimir(){
         char[] coordenadas = {'0','1','2'};
         // TABULEIRO
         System.out.println("  0 1 2");
@@ -173,7 +212,8 @@ public class Main {
         // TABULEIRO
     }
 
-    public static boolean checarEmpate(char[][] tabuleiro) {
+    // Método para checar se o jogo acabou por empate;
+    public static boolean checarEmpate() {
         boolean empate;
         int vazio = 0;
         for (int i = 0; i < tabuleiro.length; i++) {
@@ -195,10 +235,10 @@ public class Main {
 
 
     // Método para checar se há vencedor;
-    public static boolean checarVitoria(char[][] tabuleiro, String jogadorX, String jogador0) {
+    public static boolean checarVitoria() {
         boolean vitoria = false;
 
-        // Checar se os caracteres são iguais nas 8 posições que fazem a vitória. Se sim, retornar vitoria true;
+        // (refatorar para diminuir tanta repetição de código e aumentar eficiência.)
         // 6 das 8 possibilidades de vitória;
         for (int i = 0; i < tabuleiro.length; i++) {
             if (Objects.equals(tabuleiro[i][0], tabuleiro[i][1]) && Objects.equals(tabuleiro[i][0], tabuleiro[i][2])) {
@@ -206,8 +246,10 @@ public class Main {
                     vitoria = true;
                     if (tabuleiro[i][0] == 'X'){
                         System.out.println("Vitória de "+jogadorX);
+                        pontuacaoX++;
                     } else if (tabuleiro[i][0] == '0') {
                         System.out.println("Vitória de "+jogador0);
+                        pontuacao0++;
                     }
                 }
             } else if (Objects.equals(tabuleiro[0][i], tabuleiro[1][i]) && Objects.equals(tabuleiro[0][i], tabuleiro[2][i])) {
@@ -215,8 +257,10 @@ public class Main {
                     vitoria = true;
                     if (tabuleiro[0][i] == 'X'){
                         System.out.println("Vitória de "+jogadorX);
+                        pontuacaoX++;
                     } else if (tabuleiro[0][i] == '0') {
                         System.out.println("Vitória de "+jogador0);
+                        pontuacao0++;
                     }
                 }
             }
@@ -227,8 +271,10 @@ public class Main {
                     vitoria = true;
                     if (tabuleiro[0][2] == 'X'){
                         System.out.println("Vitória de "+jogadorX);
+                        pontuacaoX++;
                     } else if (tabuleiro[0][2] == '0') {
                         System.out.println("Vitória de "+jogador0);
+                        pontuacao0++;
                     }
                 }
             } else if (Objects.equals(tabuleiro[0][0], tabuleiro[1][1]) && Objects.equals(tabuleiro[0][0], tabuleiro[2][2])) {
@@ -236,13 +282,21 @@ public class Main {
                     vitoria = true;
                     if (tabuleiro[0][0] == 'X'){
                         System.out.println("Vitória de "+jogadorX);
+                        pontuacaoX++;
                     } else if (tabuleiro[0][0] == '0') {
                         System.out.println("Vitória de "+jogador0);
+                        pontuacao0++;
                     }
                 }
             }
         }
         return vitoria;
+    }
+
+    public static void limparTabuleiro(){
+        for (char[] i : tabuleiro) {
+            Arrays.fill(i, '_');
+        }
     }
     //
 }
