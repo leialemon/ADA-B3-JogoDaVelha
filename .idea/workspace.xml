@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c03d116-d944-4278-9703-9e4ae539cccc" name="Changes" comment="Resolução de bug que concedia vários pontos de uma vez ao jogador que tinha vitória na diagonal.">
+    <list default="true" id="0c03d116-d944-4278-9703-9e4ae539cccc" name="Changes" comment="Implementação de teste para impedir que o jogador marque o símbolo adversário no tabuleiro. Flavor text mostrado quando o jogo é encerrado.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +81,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722343984633</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implementação de teste para impedir que o jogador marque o símbolo adversário no tabuleiro. Flavor text mostrado quando o jogo é encerrado.">
+      <option name="closed" value="true" />
+      <created>1722345788945</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1722345788945</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -100,14 +107,15 @@
     <MESSAGE value="Implementação do loop principal do jogo e dos testes de validade das jogadas." />
     <MESSAGE value="Refatoração dos métodos que conduzem o jogo. Implementação das regras e pontuação. Remoção de bugs: 1. nome do jogador X era automaticamente null; 2. a validade de uma jogada repetida não era testada; 3. o tabuleiro não era limpo após o fim de uma partida." />
     <MESSAGE value="Resolução de bug que concedia vários pontos de uma vez ao jogador que tinha vitória na diagonal." />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolução de bug que concedia vários pontos de uma vez ao jogador que tinha vitória na diagonal." />
+    <MESSAGE value="Implementação de teste para impedir que o jogador marque o símbolo adversário no tabuleiro. Flavor text mostrado quando o jogo é encerrado." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementação de teste para impedir que o jogador marque o símbolo adversário no tabuleiro. Flavor text mostrado quando o jogo é encerrado." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>260</line>
+          <line>267</line>
           <properties class="Main" method="checarVitoria">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
