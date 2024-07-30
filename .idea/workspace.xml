@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c03d116-d944-4278-9703-9e4ae539cccc" name="Changes" comment="Implementação do loop principal do jogo e dos testes de validade das jogadas.">
+    <list default="true" id="0c03d116-d944-4278-9703-9e4ae539cccc" name="Changes" comment="Refatoração dos métodos que conduzem o jogo. Implementação das regras e pontuação. Remoção de bugs: 1. nome do jogador X era automaticamente null; 2. a validade de uma jogada repetida não era testada; 3. o tabuleiro não era limpo após o fim de uma partida.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
@@ -66,24 +66,44 @@
       <option name="project" value="LOCAL" />
       <updated>1722184176569</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Refatoração dos métodos que conduzem o jogo. Implementação das regras e pontuação. Remoção de bugs: 1. nome do jogador X era automaticamente null; 2. a validade de uma jogada repetida não era testada; 3. o tabuleiro não era limpo após o fim de uma partida.">
+      <option name="closed" value="true" />
+      <created>1722273308896</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1722273308896</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Implementação do loop principal do jogo e dos testes de validade das jogadas." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementação do loop principal do jogo e dos testes de validade das jogadas." />
+    <MESSAGE value="Refatoração dos métodos que conduzem o jogo. Implementação das regras e pontuação. Remoção de bugs: 1. nome do jogador X era automaticamente null; 2. a validade de uma jogada repetida não era testada; 3. o tabuleiro não era limpo após o fim de uma partida." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refatoração dos métodos que conduzem o jogo. Implementação das regras e pontuação. Remoção de bugs: 1. nome do jogador X era automaticamente null; 2. a validade de uma jogada repetida não era testada; 3. o tabuleiro não era limpo após o fim de uma partida." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>170</line>
-          <properties class="Main" method="checarEmpate">
+          <line>247</line>
+          <properties class="Main" method="checarVitoria">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

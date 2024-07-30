@@ -34,30 +34,19 @@ public class Main {
         }
         } while(Objects.equals(jogadorX,"") || Objects.equals(jogador0,"") || Objects.equals(jogadorX,jogador0));
 
-        String[] jogadores = {jogador0, jogadorX};
 
-        // Escolher o primeiro jogador;
-        Random aleatorio = new Random();
-        int primeiro = aleatorio.nextInt(2);
+        String[] jogadoresOrdenados;
 
-        System.out.println(jogadores[primeiro]+", você começa!");
 
-        String[] jogadoresOrdenados = new String[2];
-        jogadoresOrdenados[0] = jogadores[primeiro];
-        if(Objects.equals(jogadores[primeiro],jogador0)){
-            jogadoresOrdenados[1] = jogadorX;
-        }
-        else{
-            jogadoresOrdenados[1] = jogador0;
-        }
 
         String comando;
         do{
+            jogadoresOrdenados = escolherPrimeiro();
             loopJogo(jogadoresOrdenados);
+            limparTabuleiro();
             System.out.println();
             pontuacao();
             System.out.println();
-            limparTabuleiro();
             System.out.println("Digite 'h' para ler novamente a história do jogo, 'r' para ler as regras e comandos, ou 'q' para sair.");
             System.out.println("Para jogar novamente, digite qualquer coisa (exceto 'q').");
             comando = input.next().toLowerCase();
@@ -118,6 +107,25 @@ public class Main {
         System.out.println("0 "+jogador0+": "+pontuacao0);
     }
 
+    // Método para escolher o primeiro jogador;
+    public static String[] escolherPrimeiro(){
+        String[] jogadores = {jogador0, jogadorX};
+        Random aleatorio = new Random();
+        int primeiro = aleatorio.nextInt(2);
+
+        System.out.println(jogadores[primeiro]+", você começa!");
+
+        String[] jogadoresOrdenados = new String[2];
+        jogadoresOrdenados[0] = jogadores[primeiro];
+        if(Objects.equals(jogadores[primeiro],jogador0)){
+            jogadoresOrdenados[1] = jogadorX;
+        }
+        else{
+            jogadoresOrdenados[1] = jogador0;
+        }
+        return jogadoresOrdenados;
+    }
+
     // Dois métodos que controlam o funcionamento do jogo;
     public static void loopJogo(String[] jogadores){
         boolean vitoria = checarVitoria();
@@ -129,7 +137,9 @@ public class Main {
                 System.out.println(jogador + ", sua vez!");
                 tabuleiro = loopJogada();
                 vitoria = checarVitoria();
-                empate = checarEmpate();
+                if(!vitoria){
+                    empate = checarEmpate();
+                }
                 if (vitoria || empate){
                     break;
                 }
@@ -240,51 +250,54 @@ public class Main {
 
         // (refatorar para diminuir tanta repetição de código e aumentar eficiência.)
         // 6 das 8 possibilidades de vitória;
+
         for (int i = 0; i < tabuleiro.length; i++) {
             if (Objects.equals(tabuleiro[i][0], tabuleiro[i][1]) && Objects.equals(tabuleiro[i][0], tabuleiro[i][2])) {
                 if (!Objects.equals(tabuleiro[i][0], '_')) { // condicional para dizer que vitoria é false se os caracteres iguais forem "_";
                     vitoria = true;
-                    if (tabuleiro[i][0] == 'X'){
-                        System.out.println("Vitória de "+jogadorX);
+                    if (tabuleiro[i][0] == 'X') {
+                        System.out.println("Vitória de " + jogadorX);
                         pontuacaoX++;
                     } else if (tabuleiro[i][0] == '0') {
-                        System.out.println("Vitória de "+jogador0);
+                        System.out.println("Vitória de " + jogador0);
                         pontuacao0++;
                     }
                 }
             } else if (Objects.equals(tabuleiro[0][i], tabuleiro[1][i]) && Objects.equals(tabuleiro[0][i], tabuleiro[2][i])) {
                 if (!Objects.equals(tabuleiro[0][i], '_')) {
                     vitoria = true;
-                    if (tabuleiro[0][i] == 'X'){
-                        System.out.println("Vitória de "+jogadorX);
+                    if (tabuleiro[0][i] == 'X') {
+                        System.out.println("Vitória de " + jogadorX);
                         pontuacaoX++;
                     } else if (tabuleiro[0][i] == '0') {
-                        System.out.println("Vitória de "+jogador0);
+                        System.out.println("Vitória de " + jogador0);
                         pontuacao0++;
                     }
                 }
             }
+        }
 
             // 2 possibilidades restantes (diagonais);
+        if (!vitoria) {
             if (Objects.equals(tabuleiro[0][2], tabuleiro[1][1]) && Objects.equals(tabuleiro[0][2], tabuleiro[2][0])) {
                 if (!Objects.equals(tabuleiro[0][2], '_')) {
                     vitoria = true;
-                    if (tabuleiro[0][2] == 'X'){
-                        System.out.println("Vitória de "+jogadorX);
+                    if (tabuleiro[0][2] == 'X') {
+                        System.out.println("Vitória de " + jogadorX);
                         pontuacaoX++;
                     } else if (tabuleiro[0][2] == '0') {
-                        System.out.println("Vitória de "+jogador0);
+                        System.out.println("Vitória de " + jogador0);
                         pontuacao0++;
                     }
                 }
             } else if (Objects.equals(tabuleiro[0][0], tabuleiro[1][1]) && Objects.equals(tabuleiro[0][0], tabuleiro[2][2])) {
                 if (!Objects.equals(tabuleiro[0][0], '_')) {
                     vitoria = true;
-                    if (tabuleiro[0][0] == 'X'){
-                        System.out.println("Vitória de "+jogadorX);
+                    if (tabuleiro[0][0] == 'X') {
+                        System.out.println("Vitória de " + jogadorX);
                         pontuacaoX++;
                     } else if (tabuleiro[0][0] == '0') {
-                        System.out.println("Vitória de "+jogador0);
+                        System.out.println("Vitória de " + jogador0);
                         pontuacao0++;
                     }
                 }
