@@ -34,12 +34,9 @@ public class Main {
         }
         } while(Objects.equals(jogadorX,"") || Objects.equals(jogador0,"") || Objects.equals(jogadorX,jogador0));
 
-
         String[] jogadoresOrdenados;
-
-
-
         String comando;
+
         do{
             jogadoresOrdenados = escolherPrimeiro();
             loopJogo(jogadoresOrdenados);
@@ -60,6 +57,14 @@ public class Main {
             }
         }
         while(!Objects.equals(comando, "q"));
+
+        if (pontuacaoX > pontuacao0){
+            System.out.println("Vitória de X! Xena Xavier é a maior guerreira do reino dos caracteres!!");
+        } else if (pontuacao0 > pontuacaoX) {
+            System.out.println("Vitória de 0! 0strogildo Ostrogodo é o maior guerreiro do reino dos caracteres!!");
+        } else {
+            System.out.println("Empate! Xena e 0strogildo terão que se enfrentar novamente...");
+        }
     }
     // Método para contar a historinha;
     public static void historia(){
@@ -97,7 +102,6 @@ public class Main {
         System.out.println("Não é permitido repetir jogadas (ou seja, tentar marcar um espaço que já está marcado).");
         System.out.println("Se todos os espaços forem preenchidos e não houver vencedor, a partida acabará em empate.");
         System.out.println("Quando uma partida acabar, digite 'h' para ler novamente a história do jogo, 'r' para ler as regras e comandos, ou 'q' para sair.");
-        System.out.println();
     }
 
     // Método para imprimir pontuações;
@@ -135,7 +139,7 @@ public class Main {
             // loop do jogo
             for (String jogador : jogadores) {
                 System.out.println(jogador + ", sua vez!");
-                tabuleiro = loopJogada();
+                tabuleiro = loopJogada(jogador);
                 vitoria = checarVitoria();
                 if(!vitoria){
                     empate = checarEmpate();
@@ -147,26 +151,42 @@ public class Main {
         }
     }
 
-    public static char[][] loopJogada(){
+    public static char[][] loopJogada(String jogador){
         String jogada;
         int linha;
         int coluna;
         char marcador;
+        boolean correspondencia;
         boolean validade;
         boolean repetida;
         do {
-            jogada = input.next().toUpperCase();
-            validade = checarValidade(jogada);
-            while (!validade) {
-                System.out.println("Jogue novamente:");
+            do {
                 jogada = input.next().toUpperCase();
                 validade = checarValidade(jogada);
+                while (!validade) {
+                    System.out.println("Jogue novamente:");
+                    jogada = input.next().toUpperCase();
+                    validade = checarValidade(jogada);
+                }
+                linha = Character.getNumericValue(jogada.charAt(0));
+                coluna = Character.getNumericValue(jogada.charAt(1));
+                marcador = jogada.charAt(2);
+                repetida = checarRepetida(tabuleiro[linha][coluna]);
+            } while (repetida);
+            // teste do marcador
+            if (Objects.equals(jogador, jogadorX) && marcador == '0') {
+                System.out.println("Você é o jogador X, portanto só pode marcar X no tabuleiro.");
+                System.out.println("Xena se sente traída e pede que você jogue novamente:");
+                correspondencia = false;
+            } else if (Objects.equals(jogador, jogador0) && marcador == 'X') {
+                System.out.println("Você é o jogador 0, portanto só pode marcar 0 no tabuleiro.");
+                System.out.println("0strogildo se sente traído e pede que você jogue novamente:");
+                correspondencia = false;
+            } else {
+                correspondencia = true;
             }
-            linha = Character.getNumericValue(jogada.charAt(0));
-            coluna = Character.getNumericValue(jogada.charAt(1));
-            marcador = jogada.charAt(2);
-            repetida = checarRepetida(tabuleiro[linha][coluna]);
-        }while(repetida);
+        } while (!correspondencia);
+
         tabuleiro[linha][coluna] = marcador;
         tabuleiroImprimir();
         return tabuleiro;
